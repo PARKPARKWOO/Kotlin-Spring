@@ -1,8 +1,8 @@
-package com.example.kotlin_example.domain
+package com.example.kotlin_example.domain.post
 
+import com.example.kotlin_example.domain.BaseEntity
+import com.example.kotlin_example.domain.member.Member
 import jakarta.persistence.*
-import jakarta.persistence.GenerationType.IDENTITY
-import jakarta.validation.constraints.NotNull
 
 @Entity
 class Post(

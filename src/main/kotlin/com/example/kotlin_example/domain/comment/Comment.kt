@@ -1,8 +1,9 @@
-package com.example.kotlin_example.domain
+package com.example.kotlin_example.domain.comment
 
+import com.example.kotlin_example.domain.BaseEntity
+import com.example.kotlin_example.domain.post.Post
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
 import jakarta.persistence.FetchType.LAZY
 import jakarta.persistence.ManyToOne
 

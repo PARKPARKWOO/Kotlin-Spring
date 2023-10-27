@@ -1,6 +1,6 @@
 package com.example.kotlin_example.service.impl
 
-import com.example.kotlin_example.domain.Member
+import com.example.kotlin_example.domain.member.Member
 import com.example.kotlin_example.repository.MemberRepository
 import com.example.kotlin_example.service.MemberService
 import org.springframework.stereotype.Service

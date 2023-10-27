@@ -1,8 +1,9 @@
 package com.example.kotlin_example.config
 
-import com.example.kotlin_example.domain.Member
-import com.example.kotlin_example.domain.Role
-import com.example.kotlin_example.domain.Role.USER
+import com.example.kotlin_example.domain.member.Member
+import com.example.kotlin_example.domain.member.Role.USER
+import com.example.kotlin_example.domain.member.dto.MemberSaveRequest
+import com.example.kotlin_example.domain.member.dto.toEntity
 import com.example.kotlin_example.repository.MemberRepository
 import io.github.serpro69.kfaker.faker
 import org.springframework.boot.context.event.ApplicationReadyEvent
@@ -17,12 +18,18 @@ class InitData(
 
     @EventListener(ApplicationReadyEvent::class)
     private fun init(){
-
-        val member = Member(
-            email = faker.internet.safeEmail(),
+        val members = mutableListOf<Member>()
+        for (i in 1.. 10){
+            val generateMember = generateMember()
+            members.add(generateMember)
+        }
+        memberRepository.saveAll(members)
+    }
+    private fun generateMember(): Member{
+        return MemberSaveRequest(
+            email = faker.internet.email(),
             password = "1234",
             role = USER
-        )
-        memberRepository.save(member)
+        ).toEntity()
     }
 }

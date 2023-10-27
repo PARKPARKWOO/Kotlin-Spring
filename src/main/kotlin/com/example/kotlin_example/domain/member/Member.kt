@@ -1,7 +1,7 @@
-package com.example.kotlin_example.domain
+package com.example.kotlin_example.domain.member
 
+import com.example.kotlin_example.domain.BaseEntity
 import jakarta.persistence.*
-import jakarta.persistence.GenerationType.IDENTITY
 
 @Entity
 class Member(
