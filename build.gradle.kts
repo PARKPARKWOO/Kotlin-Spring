@@ -38,9 +38,11 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 //    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
 //    testImplementation("org.springframework.security:spring-security-test")
+    // p6spy
+    implementation("p6spy:p6spy:3.9.1")
+
 
     // faker
-
     implementation ("io.github.serpro69:kotlin-faker:1.15.0")
 }
 

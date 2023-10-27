@@ -21,3 +21,8 @@ spring:
       hibernate:
         default_batch_fetch_size: 1000
     show-sql: true
+
+logging.level:
+  org.hibernate:
+    SQL: debug
+    orm.jdbc.bind: trace
