@@ -24,12 +24,3 @@ data class MemberResponse(
     val password: String,
     val role: Role
 )
-
-fun MemberResponse.toDto(member: Member):MemberResponse{
-    return MemberResponse(
-        id  = member.id,
-        email = member.email,
-        password = member.password,
-        role = member.role
-    )
-}

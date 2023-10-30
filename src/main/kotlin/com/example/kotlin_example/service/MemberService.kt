@@ -5,5 +5,5 @@ import com.example.kotlin_example.domain.member.dto.MemberResponse
 
 interface MemberService {
     fun findAll(): MutableList<Member>
-    fun findById(memberId: Long): MemberResponse
+    fun findById(memberId: Long): Member
 }

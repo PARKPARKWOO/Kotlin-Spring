@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/members")
+@RequestMapping("/api/member")
 class MemberController(
     private val memberService: MemberService,
 
@@ -21,6 +21,13 @@ class MemberController(
 
     @GetMapping("/{memberId}")
     fun findMember(@PathVariable("memberId") memberId :Long):Response<MemberResponse>{
-        return Response(200, "$memberId 회원 정보", memberService.findById(memberId))
+        val member = memberService.findById(memberId)
+        val response = MemberResponse(
+            id = member.id,
+            email = member.email,
+            password = member.password,
+            role = member.role
+        )
+        return Response(200, "$memberId 회원 정보", response)
     }
 }
