@@ -40,10 +40,15 @@ dependencies {
 //    testImplementation("org.springframework.security:spring-security-test")
     // p6spy
     implementation("p6spy:p6spy:3.9.1")
-
-
     // faker
-    implementation ("io.github.serpro69:kotlin-faker:1.15.0")
+    implementation("io.github.serpro69:kotlin-faker:1.15.0")
+
+    // kotlin-jdsl
+    implementation("com.linecorp.kotlin-jdsl:jpql-dsl:3.0.0")
+    implementation("com.linecorp.kotlin-jdsl:jpql-render:3.0.0")
+    implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-starter:2.0.3.RELEASE")
+
+
 }
 
 tasks.withType<KotlinCompile> {

@@ -40,7 +40,8 @@ class PostController(
 
     @DeleteMapping("/{id}")
     fun deletePost(@PathVariable("id") postId: Long ):Response<Unit>{
-        postService.deletePost(postId)
+        val post = postService.getPost(postId)
+        postService.deletePost(post)
         return Response(OK, "$postId 번 게시글 삭제 완료", Unit)
     }
 }

@@ -46,5 +46,6 @@ class MemberServiceImpl(
     @Transactional
     override fun deleteMember(memberId: Long) {
         val member = findById(memberId)
+        memberRepository.delete(member)
     }
 }

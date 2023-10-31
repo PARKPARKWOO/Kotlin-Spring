@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional(readOnly = true)
 class PostServiceImpl(
      private val postRepository: PostRepository,
-    private val memberService: MemberService
+     private val memberService: MemberService
 ): PostService {
     @Override
     @Transactional
@@ -39,8 +39,8 @@ class PostServiceImpl(
 
     @Override
     @Transactional
-    override fun deletePost(postId: Long) {
-        postRepository.delete(getPost(postId))
+    override fun deletePost(post: Post) {
+        postRepository.delete(post)
     }
 
 }
