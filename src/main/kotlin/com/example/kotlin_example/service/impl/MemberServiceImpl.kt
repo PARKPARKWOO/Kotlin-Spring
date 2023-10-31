@@ -48,4 +48,8 @@ class MemberServiceImpl(
         val member = findById(memberId)
         memberRepository.delete(member)
     }
+
+    override fun test(): List<Member> {
+        return memberRepository.fineMembers()
+    }
 }

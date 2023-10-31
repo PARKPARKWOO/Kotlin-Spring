@@ -46,9 +46,8 @@ dependencies {
     // kotlin-jdsl
     implementation("com.linecorp.kotlin-jdsl:jpql-dsl:3.0.0")
     implementation("com.linecorp.kotlin-jdsl:jpql-render:3.0.0")
-    implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-starter:2.0.3.RELEASE")
-
-
+    implementation("com.linecorp.kotlin-jdsl:jpql-support:3.0.0")
+    implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-starter-jakarta:2.2.1.RELEASE")
 }
 
 tasks.withType<KotlinCompile> {

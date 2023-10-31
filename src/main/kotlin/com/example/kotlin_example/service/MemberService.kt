@@ -9,4 +9,5 @@ interface MemberService {
     fun findMemberResponseAll(): List<MemberResponse>
     fun createMember(): Long
     fun deleteMember(memberId: Long)
+    fun test(): List<Member>
 }
