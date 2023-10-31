@@ -6,6 +6,8 @@ import com.example.kotlin_example.service.MemberService
 import com.example.kotlin_example.util.Response
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatus.OK
 import org.springframework.http.ResponseEntity
@@ -43,6 +45,8 @@ class MemberController(
         memberService.deleteMember(memberId)
     }
 
-    @GetMapping("/test")
-    fun test():Response<List<Member>> = Response(OK, "테스트", memberService.test())
+    @GetMapping("/paging")
+    fun pagingMembers(@PageableDefault(size = 10) page: Pageable):Response<List<MemberResponse>> {
+        return Response(OK, "페이징", memberService.pagingMembers(page))
+    }
 }

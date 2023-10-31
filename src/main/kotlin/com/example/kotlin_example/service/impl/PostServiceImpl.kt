@@ -2,6 +2,7 @@ package com.example.kotlin_example.service.impl
 
 import com.example.kotlin_example.domain.post.Post
 import com.example.kotlin_example.domain.post.dto.PostCreateRequest
+import com.example.kotlin_example.domain.post.dto.PostResponse
 import com.example.kotlin_example.domain.post.dto.toEntity
 import com.example.kotlin_example.error.ErrorResponse
 import com.example.kotlin_example.error.exception.PostCreateFailException
@@ -9,6 +10,7 @@ import com.example.kotlin_example.repository.PostRepository
 import com.example.kotlin_example.service.MemberService
 import com.example.kotlin_example.service.PostService
 import com.example.kotlin_example.util.Response
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -41,6 +43,18 @@ class PostServiceImpl(
     @Transactional
     override fun deletePost(post: Post) {
         postRepository.delete(post)
+    }
+
+    @Override
+    override fun pagingPost(page: Pageable): List<PostResponse> {
+        return postRepository.findPosts(page).map {
+            PostResponse(
+                id = it.id!!,
+                title = it.title,
+                content = it.content,
+                memberId = it.member.id!!
+            )
+        }
     }
 
 }

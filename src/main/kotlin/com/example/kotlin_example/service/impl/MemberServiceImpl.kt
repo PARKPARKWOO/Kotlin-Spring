@@ -5,6 +5,7 @@ import com.example.kotlin_example.domain.member.dto.MemberResponse
 import com.example.kotlin_example.error.exception.MemberNotFoundException
 import com.example.kotlin_example.repository.MemberRepository
 import com.example.kotlin_example.service.MemberService
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -49,7 +50,14 @@ class MemberServiceImpl(
         memberRepository.delete(member)
     }
 
-    override fun test(): List<Member> {
-        return memberRepository.fineMembers()
+    override fun pagingMembers(page: Pageable): List<MemberResponse> {
+        return memberRepository.findMembers(page).map {
+            MemberResponse(
+                id = it.id,
+                email = it.email,
+                password = it.password,
+                role = it.role
+            )
+        }
     }
 }

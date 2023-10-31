@@ -19,7 +19,7 @@ class InitData(
     @EventListener(ApplicationReadyEvent::class)
     private fun init(){
         val members = mutableListOf<Member>()
-        for (i in 1.. 10){
+        for (i in 1.. 100){
             val generateMember = generateMember()
             members.add(generateMember)
         }

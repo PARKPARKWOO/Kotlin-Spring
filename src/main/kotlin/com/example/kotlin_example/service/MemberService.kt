@@ -2,6 +2,7 @@ package com.example.kotlin_example.service
 
 import com.example.kotlin_example.domain.member.Member
 import com.example.kotlin_example.domain.member.dto.MemberResponse
+import org.springframework.data.domain.Pageable
 
 interface MemberService {
     fun findAll(): List<Member>
@@ -9,5 +10,5 @@ interface MemberService {
     fun findMemberResponseAll(): List<MemberResponse>
     fun createMember(): Long
     fun deleteMember(memberId: Long)
-    fun test(): List<Member>
+    fun pagingMembers(page: Pageable): List<MemberResponse>
 }

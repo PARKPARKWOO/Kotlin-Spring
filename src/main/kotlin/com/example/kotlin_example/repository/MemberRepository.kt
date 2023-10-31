@@ -8,6 +8,7 @@ import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderContext
 import com.linecorp.kotlinjdsl.spring.data.SpringDataQueryFactory
 import com.linecorp.kotlinjdsl.spring.data.listQuery
 import org.slf4j.LoggerFactory
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
@@ -15,17 +16,19 @@ interface MemberRepository:JpaRepository<Member, Long>, MemberRepositoryCustom {
 }
 
 interface MemberRepositoryCustom {
-    fun fineMembers(): List<Member>
+    fun findMembers(page: Pageable): List<Member>
 }
 
 class MemberRepositoryCustomImpl(
     private val queryFactory: SpringDataQueryFactory
 ) : MemberRepositoryCustom {
-    override fun fineMembers(): List<Member> {
+    override fun findMembers(page: Pageable): List<Member> {
         return queryFactory.listQuery<Member> {
             select(entity(Member::class))
             from(entity(Member::class))
-            orderBy(ExpressionOrderSpec(column(Member::id), false))
+            limit(page.pageSize)
+            offset(page.offset.toInt())
+            orderBy(ExpressionOrderSpec(column(Member::id), true))
         }
     }
 }
