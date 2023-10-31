@@ -4,6 +4,10 @@ import com.example.kotlin_example.domain.post.dto.PostCreateRequest
 import com.example.kotlin_example.domain.post.dto.PostResponse
 import com.example.kotlin_example.service.PostService
 import com.example.kotlin_example.util.Response
+import org.springframework.http.HttpStatus
+import org.springframework.http.HttpStatus.CREATED
+import org.springframework.http.HttpStatus.OK
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -19,7 +23,7 @@ class PostController(
     @PostMapping("/create")
     fun createPost(@RequestBody postRequest: PostCreateRequest): Response<Long> {
         val postId = postService.createPost(postRequest)
-        return Response(201, "게시글 생성 완료", postId)
+        return Response(CREATED, "게시글 생성 완료", postId)
     }
 
     @GetMapping("/{id}")
@@ -31,6 +35,12 @@ class PostController(
             content = post.content,
             memberId = post.member.id!!
         )
-        return Response(200, "게시글 조회 완료", response)
+        return Response(OK, "$postId 번 게시글 조회 완료", response)
+    }
+
+    @DeleteMapping("/{id}")
+    fun deletePost(@PathVariable("id") postId: Long ):Response<Unit>{
+        postService.deletePost(postId)
+        return Response(OK, "$postId 번 게시글 삭제 완료", Unit)
     }
 }

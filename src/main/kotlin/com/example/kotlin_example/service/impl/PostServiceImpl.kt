@@ -37,4 +37,10 @@ class PostServiceImpl(
         return postRepository.findById(postId).orElseThrow { throw PostCreateFailException(ErrorResponse.POST_NOT_FOUND) }
     }
 
+    @Override
+    @Transactional
+    override fun deletePost(postId: Long) {
+        postRepository.delete(getPost(postId))
+    }
+
 }

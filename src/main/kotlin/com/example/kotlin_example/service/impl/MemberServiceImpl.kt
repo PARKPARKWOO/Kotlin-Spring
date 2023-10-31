@@ -15,11 +15,36 @@ class MemberServiceImpl(
 ) : MemberService {
 
     @Override
-    override fun findAll(): MutableList<Member> = memberRepository.findAll()
+    override fun findAll(): List<Member>{
+        return memberRepository.findAll()
+    }
     @Override
     override fun findById(memberId: Long): Member{
-        val memberEntity = memberRepository.findById(memberId)
-        if (memberEntity.isEmpty) throw MemberNotFoundException()
-        return memberRepository.findById(memberId).get()
+        return memberRepository.findById(memberId).orElseThrow { throw MemberNotFoundException() }
+    }
+
+    @Override
+    override fun findMemberResponseAll(): List<MemberResponse> {
+        val findAll = findAll()
+        return findAll.map {
+            MemberResponse(
+                id = it.id,
+                email = it.email,
+                password = it.password,
+                role = it.role
+            )
+        }.toList()
+    }
+
+    @Override
+    @Transactional
+    override fun createMember(): Long {
+        TODO("Not yet implemented")
+    }
+
+    @Override
+    @Transactional
+    override fun deleteMember(memberId: Long) {
+        val member = findById(memberId)
     }
 }
