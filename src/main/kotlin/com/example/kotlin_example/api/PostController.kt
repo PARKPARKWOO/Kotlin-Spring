@@ -1,5 +1,6 @@
 package com.example.kotlin_example.api
 
+import com.example.kotlin_example.api.common.BaseController
 import com.example.kotlin_example.domain.post.dto.PostCreateRequest
 import com.example.kotlin_example.domain.post.dto.PostResponse
 import com.example.kotlin_example.service.PostService
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/post")
 class PostController(
     private val postService: PostService,
-) {
+):BaseController() {
     @PostMapping("/create")
     fun createPost(@RequestBody postRequest: PostCreateRequest): Response<Long> {
         val postId = postService.createPost(postRequest)

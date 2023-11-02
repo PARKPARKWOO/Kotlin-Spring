@@ -2,9 +2,12 @@ package com.example.kotlin_example.domain.post.dto
 
 import com.example.kotlin_example.domain.member.Member
 import com.example.kotlin_example.domain.post.Post
+import jakarta.validation.constraints.NotNull
 
 data class PostCreateRequest(
+    @field:NotNull(message = "memberId is Empty")
     val memberId: Long,
+    @field:NotNull(message = "title is Empty")
     val title: String,
     val content: String
 )

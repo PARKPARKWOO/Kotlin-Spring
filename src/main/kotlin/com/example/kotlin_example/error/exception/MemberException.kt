@@ -10,3 +10,7 @@ sealed class MemberException(
 data class MemberNotFoundException(
     override val errorResponse: ErrorResponse = MEMBER_NOT_FOUND
 ): MemberException(errorResponse)
+
+data class DuplicateEmailException(
+    override val errorResponse: ErrorResponse
+): MemberException(errorResponse)

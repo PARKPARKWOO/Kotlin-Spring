@@ -7,16 +7,20 @@ import com.linecorp.kotlinjdsl.querydsl.expression.column
 import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderContext
 import com.linecorp.kotlinjdsl.spring.data.SpringDataQueryFactory
 import com.linecorp.kotlinjdsl.spring.data.listQuery
+import com.linecorp.kotlinjdsl.spring.data.singleQuery
+import jakarta.persistence.NoResultException
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
+import java.util.Optional
 
-interface MemberRepository:JpaRepository<Member, Long>, MemberRepositoryCustom {
+interface MemberRepository : JpaRepository<Member, Long>, MemberRepositoryCustom {
 }
 
 interface MemberRepositoryCustom {
     fun findMembers(page: Pageable): List<Member>
+    fun findByEmail(email:String): Member?
 }
 
 class MemberRepositoryCustomImpl(
@@ -30,5 +34,14 @@ class MemberRepositoryCustomImpl(
             offset(page.offset.toInt())
             orderBy(ExpressionOrderSpec(column(Member::id), true))
         }
+    }
+
+    override fun findByEmail(email: String): Member? {
+        val result =  queryFactory.listQuery{
+            select(entity(Member::class))
+            from(entity(Member::class))
+            where(column(Member::email).equal(email))
+        }
+        return result.firstOrNull()
     }
 }
