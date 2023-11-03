@@ -2,6 +2,7 @@ package com.example.kotlin_example.error.controller
 
 import com.example.kotlin_example.api.common.BaseController
 import com.example.kotlin_example.error.ErrorResponse
+import com.example.kotlin_example.error.FieldErrorResponse
 import com.example.kotlin_example.error.exception.MemberException
 import com.example.kotlin_example.error.exception.PostException
 import org.springframework.http.ResponseEntity
@@ -24,7 +25,10 @@ class ExceptionController(): BaseController() {
     }
 
     @ExceptionHandler(value = [MethodArgumentNotValidException::class])
-    fun validException(e: MethodArgumentNotValidException): ResponseEntity<ErrorResponse>{
-        return ResponseEntity.status(e.statusCode).body(e.bindingResult.)
+    fun validException(e: MethodArgumentNotValidException): ResponseEntity<FieldErrorResponse>{
+        log.error(e.message)
+        val of = FieldErrorResponse.FieldError.of(e.bindingResult)
+        val filedErrorResponse = FieldErrorResponse(e.statusCode, e.message, of)
+        return ResponseEntity.status(e.statusCode).body(filedErrorResponse)
     }
 }
