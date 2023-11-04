@@ -5,7 +5,9 @@ import com.example.kotlin_example.domain.post.dto.PostCreateRequest
 import com.example.kotlin_example.domain.post.dto.PostResponse
 import com.example.kotlin_example.domain.post.dto.toEntity
 import com.example.kotlin_example.error.ErrorResponse
+import com.example.kotlin_example.error.ErrorResponse.POST_NOT_FOUND
 import com.example.kotlin_example.error.exception.PostCreateFailException
+import com.example.kotlin_example.error.exception.PostNotFoundException
 import com.example.kotlin_example.repository.PostRepository
 import com.example.kotlin_example.service.MemberService
 import com.example.kotlin_example.service.PostService
@@ -36,7 +38,10 @@ class PostServiceImpl(
     }
     @Override
     override fun getPost(postId: Long): Post {
-        return postRepository.findById(postId).orElseThrow { throw PostCreateFailException(ErrorResponse.POST_NOT_FOUND) }
+//        return postRepository.findById(postId).orElseThrow { throw PostNotFoundException(ErrorResponse.POST_NOT_FOUND) }
+        return postRepository.findFetchPost(postId).orElseThrow{
+            throw PostNotFoundException(POST_NOT_FOUND)
+        }
     }
 
     @Override
