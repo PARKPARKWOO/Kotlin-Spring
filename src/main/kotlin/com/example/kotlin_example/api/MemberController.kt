@@ -6,6 +6,7 @@ import com.example.kotlin_example.domain.member.dto.MemberResponse
 import com.example.kotlin_example.domain.member.dto.MemberSaveRequest
 import com.example.kotlin_example.service.MemberService
 import com.example.kotlin_example.util.Response
+import jakarta.servlet.http.HttpSession
 import jakarta.validation.Valid
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -34,7 +35,7 @@ class MemberController(
     fun findAll():Response<List<MemberResponse>> = Response(OK, "멤버 전체 목록", memberService.findMemberResponseAll())
 
     @GetMapping("/{memberId}")
-    fun findMember(@PathVariable("memberId") memberId :Long):Response<MemberResponse>{
+    fun findMember(@PathVariable("memberId") memberId: Long): Response<MemberResponse> {
         val member = memberService.findById(memberId)
         val response = MemberResponse(
             id = member.id,
