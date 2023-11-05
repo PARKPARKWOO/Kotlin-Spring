@@ -50,9 +50,12 @@ dependencies {
     implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-starter-jakarta:2.2.1.RELEASE")
 
     //jwt
-    implementation("io.jsonwebtoken:jjwt-api:0.11.2")
-    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.2")
-    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.2")
+    implementation("com.auth0:java-jwt:3.18.3")
+    implementation("io.jsonwebtoken:jjwt:0.9.1")
+    implementation("com.nimbusds:nimbus-jose-jwt:9.31")
+
+    // mockk
+    testImplementation("io.mockk:mockk:1.13.8")
 }
 
 tasks.withType<KotlinCompile> {
