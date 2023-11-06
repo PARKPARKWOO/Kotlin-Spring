@@ -37,11 +37,11 @@ class MemberRepositoryCustomImpl(
     }
 
     override fun findByEmail(email: String): Member? {
-        val result =  queryFactory.listQuery{
+        val result =  queryFactory.singleQuery{
             select(entity(Member::class))
             from(entity(Member::class))
             where(column(Member::email).equal(email))
         }
-        return result.firstOrNull()
+        return result
     }
 }

@@ -3,16 +3,15 @@ package com.example.kotlin_example.domain.member.dto
 import com.example.kotlin_example.domain.member.Member
 import com.example.kotlin_example.domain.member.Role
 import jakarta.validation.constraints.NotNull
-import java.util.*
 
-data class MemberSaveRequest(
+data class LoginDto(
     @field:NotNull(message = "email is Empty")
     val email: String?,
     val password: String?,
     val role: Role
 )
 
-fun MemberSaveRequest.toEntity(): Member {
+fun LoginDto.toEntity(): Member {
     return Member(
         email = email?: "",
         password = password?: "",

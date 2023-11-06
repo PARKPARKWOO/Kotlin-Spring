@@ -31,7 +31,6 @@ class JwtTest {
     @Test
     @DisplayName("JWT 토큰을 생성 한다.")
     fun generateJwtTest() {
-//        val jwtManager = JwtMapper()
         val member = Member("email", "pass", Role.USER)
         val details = PrincipalDetails(member)
 
