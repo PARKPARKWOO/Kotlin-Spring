@@ -27,7 +27,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 @EnableWebSecurity(debug = false)
 class SecurityConfig(
     private val authenticationConfiguration: AuthenticationConfiguration,
-    private val objectMapper: ObjectMapper
+    private val objectMapper: ObjectMapper,
+    private val jwtMapper: JwtMapper
 ) {
 
     @Bean
@@ -50,7 +51,7 @@ class SecurityConfig(
 
     @Bean
     fun loginFilter(): UsernamePasswordAuthenticationFilter {
-        val customAuthenticationFilter = CustomAuthenticationFilter(objectMapper)
+        val customAuthenticationFilter = CustomAuthenticationFilter(objectMapper, jwtMapper)
         customAuthenticationFilter.setAuthenticationManager(authenticationManager())
         return customAuthenticationFilter
     }

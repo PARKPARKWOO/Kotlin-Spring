@@ -14,9 +14,10 @@ import org.springframework.stereotype.Component
 
 class CustomAuthenticationFilter(
     private val objectMapper: ObjectMapper,
+    private val jwtMapper: JwtMapper
 ) : UsernamePasswordAuthenticationFilter() {
     private val log: Logger = LoggerFactory.getLogger(this::class.java)
-    private val jwtMapper = JwtMapper()
+
 
     override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
         val loginDto = objectMapper.readValue(request?.inputStream, LoginDto::class.java)
