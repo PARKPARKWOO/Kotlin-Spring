@@ -8,6 +8,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import java.util.*
+import javax.crypto.SecretKey
 
 class JwtMapper(
 ) {
@@ -17,10 +18,8 @@ class JwtMapper(
 
 
     val REFRESH_TOKEN_VALIDATION_SECOND = 1000L * 60 * 60 * 24 * 14 // 14일
-
     @Value("\${custom.jwt.secret}")
     private lateinit var secretKey:String
-
     fun generateAccessToken(principal: PrincipalDetails): String {
         return JWT.create()
             .withSubject(principal.username)

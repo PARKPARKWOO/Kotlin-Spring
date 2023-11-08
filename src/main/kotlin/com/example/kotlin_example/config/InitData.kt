@@ -9,10 +9,13 @@ import io.github.serpro69.kfaker.faker
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.event.EventListener
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 
 @Configuration
 class InitData(
-    private val memberRepository: MemberRepository
+    private val memberRepository: MemberRepository,
+    private val bCryptPasswordEncoder: PasswordEncoder
 ) {
     val faker = faker {  }
 
@@ -28,7 +31,7 @@ class InitData(
     private fun generateMember(): Member{
         return LoginDto(
             email = faker.internet.email(),
-            password = "1234",
+            password = bCryptPasswordEncoder.encode("1234"),
             role = USER
         ).toEntity()
     }
