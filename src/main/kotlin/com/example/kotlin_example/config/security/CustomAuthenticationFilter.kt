@@ -1,5 +1,10 @@
 package com.example.kotlin_example.config.security
 
+import com.example.kotlin_example.config.security.constants.JWT
+import com.example.kotlin_example.config.security.constants.JWT.AUTHORIZATION
+import com.example.kotlin_example.config.security.constants.JWT.BARREAR_PREFIX
+import com.example.kotlin_example.config.security.constants.Time
+import com.example.kotlin_example.config.security.constants.Time.ACCESS_TOKEN_TIME
 import com.example.kotlin_example.domain.member.dto.LoginDto
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.servlet.FilterChain
@@ -60,7 +65,7 @@ class CustomAuthenticationFilter(
     ) {
         log.info("로그인 완료되어서 jwt 토큰 만들어서 response")
         val principalDetails = authResult?.principal as PrincipalDetails
-        val accessToken = jwtMapper.generateAccessToken(principalDetails)
-        response?.addHeader("Authorization", "Baerer $accessToken")
+        val accessToken = jwtMapper.generateAccessToken(principalDetails, ACCESS_TOKEN_TIME)
+        response?.addHeader(AUTHORIZATION.name, BARREAR_PREFIX.name + accessToken)
     }
 }

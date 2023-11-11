@@ -2,6 +2,8 @@ package com.example.kotlin_example.util
 
 import com.example.kotlin_example.config.security.JwtMapper
 import com.example.kotlin_example.config.security.PrincipalDetails
+import com.example.kotlin_example.config.security.constants.Time
+import com.example.kotlin_example.config.security.constants.Time.ACCESS_TOKEN_TIME
 import com.example.kotlin_example.domain.member.Member
 import com.example.kotlin_example.domain.member.Role
 import io.mockk.MockKException
@@ -34,10 +36,10 @@ class JwtTest {
         val member = Member("email", "pass", Role.USER)
         val details = PrincipalDetails(member)
 
-        val accessToken = jwtManager.generateAccessToken(details)
+        val accessToken = jwtManager.generateAccessToken(details, ACCESS_TOKEN_TIME)
 
         val email = jwtManager.getMemberEmail(accessToken)
-        println(accessToken)
+
         Assertions.assertEquals(email, member.email)
     }
 }

@@ -1,5 +1,6 @@
 package com.example.kotlin_example.config.security
 
+import com.example.kotlin_example.service.MemberService
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -28,7 +29,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 class SecurityConfig(
     private val authenticationConfiguration: AuthenticationConfiguration,
     private val objectMapper: ObjectMapper,
-    private val jwtMapper: JwtMapper
+    private val jwtMapper: JwtMapper,
+    private val memberService: MemberService
 ) {
 
     @Bean
@@ -41,6 +43,7 @@ class SecurityConfig(
             .sessionManagement { it.sessionCreationPolicy(STATELESS) }
             .cors { it.configurationSource(corsConfig()) }
             .addFilter(loginFilter())
+            .addFilter(authenticationFilter())
         return http.build()
     }
 
@@ -77,5 +80,14 @@ class SecurityConfig(
     @Bean
     fun passwordEncoder(): PasswordEncoder {
         return BCryptPasswordEncoder()
+    }
+
+    @Bean
+    fun authenticationFilter(): CustomBasicAuthenticationFilter {
+        return CustomBasicAuthenticationFilter(
+            authenticationManager = authenticationManager(),
+            memberService = memberService,
+            jwtMapper = jwtMapper
+        )
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable
 interface MemberService {
     fun findAll(): List<Member>
     fun findById(memberId: Long): Member
+    fun findByEmail(email: String): Member
     fun findMemberResponseAll(): List<MemberResponse>
     fun createMember(saveRequest: LoginDto): Long
     fun deleteMember(memberId: Long)

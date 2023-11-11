@@ -7,6 +7,7 @@ plugins {
     kotlin("jvm") version "1.8.22"
     kotlin("plugin.spring") version "1.8.22"
     kotlin("plugin.jpa") version "1.8.22"
+    id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
 }
 
 group = "com.example"
@@ -46,7 +47,7 @@ dependencies {
     // kotlin-jdsl
     implementation("com.linecorp.kotlin-jdsl:jpql-dsl:3.0.0")
     implementation("com.linecorp.kotlin-jdsl:jpql-render:3.0.0")
-    implementation("com.linecorp.kotlin-jdsl:jpql-support:3.0.0")
+//    implementation("com.linecorp.kotlin-jdsl:jpql-support:3.0.0")
     implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-starter-jakarta:2.2.1.RELEASE")
 
     //jwt

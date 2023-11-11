@@ -5,6 +5,7 @@ import com.example.kotlin_example.domain.member.dto.MemberResponse
 import com.example.kotlin_example.domain.member.dto.LoginDto
 import com.example.kotlin_example.domain.member.dto.toEntity
 import com.example.kotlin_example.error.ErrorResponse.DUPLICATE_EMAIL
+import com.example.kotlin_example.error.ErrorResponse.MEMBER_NOT_FOUND
 import com.example.kotlin_example.error.exception.DuplicateEmailException
 import com.example.kotlin_example.error.exception.MemberNotFoundException
 import com.example.kotlin_example.repository.MemberRepository
@@ -41,6 +42,12 @@ class MemberServiceImpl(
         }.toList()
     }
 
+    override fun findByEmail(email: String): Member {
+        memberRepository.findByEmail(email)?.let {
+            return it
+        }
+        throw MemberNotFoundException(MEMBER_NOT_FOUND)
+    }
     @Override
     @Transactional
     override fun createMember(saveRequest: LoginDto): Long {
@@ -54,6 +61,8 @@ class MemberServiceImpl(
             throw DuplicateEmailException(DUPLICATE_EMAIL)
         }
     }
+
+
 
     @Override
     @Transactional

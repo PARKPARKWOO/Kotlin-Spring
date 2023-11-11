@@ -2,6 +2,8 @@ package com.example.kotlin_example.config.security
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.example.kotlin_example.config.security.constants.Time
+import com.example.kotlin_example.config.security.constants.Time.ACCESS_TOKEN_TIME
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import org.slf4j.Logger
@@ -16,16 +18,12 @@ class JwtMapper(
 ) {
     private val log:Logger = LoggerFactory.getLogger(this::class.java)
 
-    val ACCESS_TOKEN_VALIDATION_SECOND = 1000L * 60 * 30 // 30분
-
-
-    val REFRESH_TOKEN_VALIDATION_SECOND = 1000L * 60 * 60 * 24 * 14 // 14일
     @Value("\${custom.jwt.secret}")
-    private var secretKey:String = ""
-    fun generateAccessToken(principal: PrincipalDetails): String {
+    private lateinit var secretKey:String
+    fun generateAccessToken(principal: PrincipalDetails, ttl: Long): String {
         return JWT.create()
             .withSubject(principal.username)
-            .withExpiresAt(Date( System.nanoTime() + ACCESS_TOKEN_VALIDATION_SECOND))
+            .withExpiresAt(Date( System.nanoTime() + ttl))
             .withClaim("email", principal.username)
             .withClaim("password", principal.password)
             .sign(Algorithm.HMAC512(secretKey))
