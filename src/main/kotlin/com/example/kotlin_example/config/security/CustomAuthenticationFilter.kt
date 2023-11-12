@@ -1,9 +1,7 @@
-package com.example.kotlin_example.config.security
+package com.example.kotlin_example.config.security // ktlint-disable package-name
 
 import com.example.kotlin_example.config.security.constants.JWT
 import com.example.kotlin_example.config.security.constants.JWT.AUTHORIZATION
-import com.example.kotlin_example.config.security.constants.JWT.BARREAR_PREFIX
-import com.example.kotlin_example.config.security.constants.Time
 import com.example.kotlin_example.config.security.constants.Time.ACCESS_TOKEN_TIME
 import com.example.kotlin_example.domain.member.dto.LoginDto
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -15,18 +13,16 @@ import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import org.springframework.stereotype.Component
 
 class CustomAuthenticationFilter(
     private val objectMapper: ObjectMapper,
-    private val jwtMapper: JwtMapper
+    private val jwtMapper: JwtMapper,
 ) : UsernamePasswordAuthenticationFilter() {
     private val log: Logger = LoggerFactory.getLogger(this::class.java)
 
-
     override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
         val loginDto = objectMapper.readValue(request?.inputStream, LoginDto::class.java)
-        log.info("login 요청 ${loginDto.toString()}")
+        log.info("login 요청 $loginDto")
 
         val token = UsernamePasswordAuthenticationToken(loginDto.email, loginDto.password)
 
@@ -61,11 +57,11 @@ class CustomAuthenticationFilter(
         request: HttpServletRequest?,
         response: HttpServletResponse?,
         chain: FilterChain?,
-        authResult: Authentication?
+        authResult: Authentication?,
     ) {
         log.info("로그인 완료되어서 jwt 토큰 만들어서 response")
         val principalDetails = authResult?.principal as PrincipalDetails
         val accessToken = jwtMapper.generateAccessToken(principalDetails, ACCESS_TOKEN_TIME)
-        response?.addHeader(AUTHORIZATION.name, BARREAR_PREFIX.name + accessToken)
+        response?.addHeader(AUTHORIZATION.name, JWT.BARREAR_PREFIX.value + accessToken)
     }
 }

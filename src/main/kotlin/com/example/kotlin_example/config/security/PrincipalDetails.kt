@@ -1,16 +1,15 @@
-package com.example.kotlin_example.config.security
+package com.example.kotlin_example.config.security // ktlint-disable package-name
 
 import com.example.kotlin_example.domain.member.Member
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.stereotype.Component
 
 class PrincipalDetails(
-    var member: Member
-): UserDetails {
-    private val log: Logger= LoggerFactory.getLogger(this::class.java)
+    var member: Member,
+) : UserDetails {
+    private val log: Logger = LoggerFactory.getLogger(this::class.java)
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         log.info("Role 검증")
         val collection: MutableCollection<GrantedAuthority> = ArrayList()

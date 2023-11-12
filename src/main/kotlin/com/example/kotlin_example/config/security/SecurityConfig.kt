@@ -1,20 +1,15 @@
-package com.example.kotlin_example.config.security
+package com.example.kotlin_example.config.security // ktlint-disable package-name
 
 import com.example.kotlin_example.service.MemberService
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer
-import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer.AuthorizationManagerRequestMatcherRegistry
-import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer
-import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.config.http.SessionCreationPolicy.STATELESS
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -30,13 +25,13 @@ class SecurityConfig(
     private val authenticationConfiguration: AuthenticationConfiguration,
     private val objectMapper: ObjectMapper,
     private val jwtMapper: JwtMapper,
-    private val memberService: MemberService
+    private val memberService: MemberService,
 ) {
 
     @Bean
     @Throws(Exception::class)
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
-        http.csrf {it.disable()}
+        http.csrf { it.disable() }
             .headers { it -> it.frameOptions { it.disable() } }
             .formLogin { it.disable() }
             .httpBasic { it.disable() }
@@ -60,12 +55,12 @@ class SecurityConfig(
     }
 
     @Bean
-    fun webSecurityCustomizer():WebSecurityCustomizer? {
-        return WebSecurityCustomizer { web: WebSecurity? ->  web?.ignoring()?.requestMatchers("/none/**")}
+    fun webSecurityCustomizer(): WebSecurityCustomizer? {
+        return WebSecurityCustomizer { web: WebSecurity? -> web?.ignoring()?.requestMatchers("/none/**") }
     }
 
     @Bean
-    fun corsConfig():CorsConfigurationSource {
+    fun corsConfig(): CorsConfigurationSource {
         val config = CorsConfiguration()
         config.allowCredentials = true
         config.addAllowedOriginPattern("*")
@@ -87,7 +82,7 @@ class SecurityConfig(
         return CustomBasicAuthenticationFilter(
             authenticationManager = authenticationManager(),
             memberService = memberService,
-            jwtMapper = jwtMapper
+            jwtMapper = jwtMapper,
         )
     }
 }

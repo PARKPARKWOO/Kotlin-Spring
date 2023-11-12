@@ -1,10 +1,7 @@
-package com.example.kotlin_example.config.security
+package com.example.kotlin_example.config.security // ktlint-disable package-name
 
 import com.example.kotlin_example.config.security.constants.JWT
 import com.example.kotlin_example.config.security.constants.JWT.AUTHORIZATION
-import com.example.kotlin_example.error.ErrorResponse
-import com.example.kotlin_example.error.ErrorResponse.JWT_NOT_FOUND
-import com.example.kotlin_example.error.exception.JwtNotFoundException
 import com.example.kotlin_example.service.MemberService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -20,15 +17,15 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 class CustomBasicAuthenticationFilter(
     authenticationManager: AuthenticationManager,
     private val jwtMapper: JwtMapper,
-    private val memberService: MemberService
+    private val memberService: MemberService,
 ) : BasicAuthenticationFilter(authenticationManager) {
 
-    private val log :Logger = LoggerFactory.getLogger(this::class.java)
+    private val log: Logger = LoggerFactory.getLogger(this::class.java)
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
         log.info("권한이나 인증요청이 들어옴 ${AUTHORIZATION.name}")
         val header = request.getHeader(AUTHORIZATION.name)
-        val token = if (header != null && header.length < JWT.BARREAR_PREFIX.name.length) {
+        val token = if (header != null && header.length > JWT.BARREAR_PREFIX.name.length) {
             header.substring(JWT.BARREAR_PREFIX.name.length)
         } else {
             chain.doFilter(request, response)
@@ -38,19 +35,18 @@ class CustomBasicAuthenticationFilter(
         val member = memberService.findByEmail(email)
 
         val principalDetails = PrincipalDetails(member)
-        val authentication:Authentication = UsernamePasswordAuthenticationToken(
+        val authentication: Authentication = UsernamePasswordAuthenticationToken(
             principalDetails,
-            principalDetails.password
+            principalDetails.password,
         )
         SecurityContextHolder.getContext().authentication = authentication
         chain.doFilter(request, response)
     }
 
-
     override fun onSuccessfulAuthentication(
         request: HttpServletRequest?,
         response: HttpServletResponse?,
-        authResult: Authentication?
+        authResult: Authentication?,
     ) {
         super.onSuccessfulAuthentication(request, response, authResult)
     }
