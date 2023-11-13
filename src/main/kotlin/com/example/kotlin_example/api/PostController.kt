@@ -1,13 +1,12 @@
-package com.example.kotlin_example.api
+package com.example.kotlin_example.api // ktlint-disable package-name
 
-import com.example.kotlin_example.api.common.BaseController
+import com.example.kotlin_example.api.common.Log
 import com.example.kotlin_example.domain.post.dto.PostCreateRequest
 import com.example.kotlin_example.domain.post.dto.PostResponse
 import com.example.kotlin_example.service.PostService
 import com.example.kotlin_example.util.Response
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
-import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.HttpStatus.OK
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -19,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/post")
+@RequestMapping("/api/v1/post")
 class PostController(
     private val postService: PostService,
-):BaseController() {
+) : Log() {
     @PostMapping("/create")
     fun createPost(@RequestBody postRequest: PostCreateRequest): Response<Long> {
         val postId = postService.createPost(postRequest)
@@ -41,13 +40,13 @@ class PostController(
             id = post.id!!,
             title = post.title,
             content = post.content,
-            memberId = post.member.id!!
+            memberId = post.member.id!!,
         )
         return Response(OK, "$postId 번 게시글 조회 완료", response)
     }
 
     @DeleteMapping("/{id}")
-    fun deletePost(@PathVariable("id") postId: Long ):Response<Unit>{
+    fun deletePost(@PathVariable("id") postId: Long): Response<Unit> {
         val post = postService.getPost(postId)
         postService.deletePost(post)
         return Response(OK, "$postId 번 게시글 삭제 완료", Unit)

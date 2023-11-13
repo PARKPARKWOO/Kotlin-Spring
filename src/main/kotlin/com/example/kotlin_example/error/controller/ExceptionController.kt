@@ -1,6 +1,6 @@
 package com.example.kotlin_example.error.controller
 
-import com.example.kotlin_example.api.common.BaseController
+import com.example.kotlin_example.api.common.Log
 import com.example.kotlin_example.error.ErrorResponse
 import com.example.kotlin_example.error.FieldErrorResponse
 import com.example.kotlin_example.error.exception.MemberException
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
-class ExceptionController(): BaseController() {
+class ExceptionController(): Log() {
     @ExceptionHandler(value = [MemberException::class])
     fun memberException(e: MemberException): ResponseEntity<ErrorResponse> {
         log.error(e.message)

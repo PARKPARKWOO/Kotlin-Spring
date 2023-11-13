@@ -39,6 +39,14 @@ class SecurityConfig(
             .cors { it.configurationSource(corsConfig()) }
             .addFilter(loginFilter())
             .addFilter(authenticationFilter())
+            .authorizeHttpRequests {
+                it.requestMatchers("/login").permitAll()
+                it.requestMatchers("/**").authenticated()
+            }
+            .exceptionHandling {
+                it.accessDeniedHandler(CustomAccessDeniedHandler())
+                it.authenticationEntryPoint(CustomAuthenticationEntryPoint())
+            }
         return http.build()
     }
 

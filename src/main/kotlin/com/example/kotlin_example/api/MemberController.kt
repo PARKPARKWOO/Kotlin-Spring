@@ -1,8 +1,8 @@
-package com.example.kotlin_example.api
+package com.example.kotlin_example.api // ktlint-disable package-name
 
-import com.example.kotlin_example.api.common.BaseController
-import com.example.kotlin_example.domain.member.dto.MemberResponse
+import com.example.kotlin_example.api.common.Log
 import com.example.kotlin_example.domain.member.dto.LoginDto
+import com.example.kotlin_example.domain.member.dto.MemberResponse
 import com.example.kotlin_example.service.MemberService
 import com.example.kotlin_example.util.Response
 import jakarta.validation.Valid
@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/member")
+@RequestMapping("/api/v1/member")
 class MemberController(
     private val memberService: MemberService,
 
-):BaseController() {
+) : Log() {
     @GetMapping("/all")
-    fun findAll():Response<List<MemberResponse>> = Response(OK, "멤버 전체 목록", memberService.findMemberResponseAll())
+    fun findAll(): Response<List<MemberResponse>> = Response(OK, "멤버 전체 목록", memberService.findMemberResponseAll())
 
     @GetMapping("/{memberId}")
     fun findMember(@PathVariable("memberId") memberId: Long): Response<MemberResponse> {
@@ -34,26 +34,28 @@ class MemberController(
             id = member.id,
             email = member.email,
             password = member.password,
-            role = member.role
+            role = member.role,
         )
         return Response(OK, "$memberId 회원 정보", response)
     }
 
     @DeleteMapping("/{memberId}")
-    fun deleteMember(@PathVariable("memberId") memberId: Long){
+    fun deleteMember(@PathVariable("memberId") memberId: Long) {
         memberService.deleteMember(memberId)
     }
 
     @GetMapping("/paging")
-    fun pagingMembers(@PageableDefault(size = 10) page: Pageable):Response<List<MemberResponse>> {
+    fun pagingMembers(@PageableDefault(size = 10) page: Pageable): Response<List<MemberResponse>> {
         return Response(OK, "페이징", memberService.pagingMembers(page))
     }
 
     @PostMapping
-    fun createMember(@Valid @RequestBody saveRequest: LoginDto):Response<Long> {
+    fun createMember(
+        @Valid @RequestBody
+        saveRequest: LoginDto,
+    ): Response<Long> {
         val memberId = memberService.createMember(saveRequest)
 
         return Response(CREATED, "회원 가입 성공", memberId)
     }
-
 }

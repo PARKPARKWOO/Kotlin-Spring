@@ -1,4 +1,4 @@
-package com.example.kotlin_example.api
+package com.example.kotlin_example.api // ktlint-disable package-name
 
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
