@@ -13,6 +13,7 @@ class CustomAccessDeniedHandler() : AccessDeniedHandler, Log() {
     override fun handle(
         request: HttpServletRequest,
         response: HttpServletResponse,
+
         accessDeniedException: AccessDeniedException?,
     ) {
         log.info("accessDeniedHandler")
