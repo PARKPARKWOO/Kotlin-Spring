@@ -40,7 +40,7 @@ class SecurityConfig(
             .addFilter(loginFilter())
             .addFilter(authenticationFilter())
             .authorizeHttpRequests {
-                it.requestMatchers("/login").permitAll()
+//                it.requestMatchers("/login").permitAll()
                 it.requestMatchers("/**").authenticated()
             }
             .exceptionHandling {
