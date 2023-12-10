@@ -7,6 +7,9 @@ import com.example.kotlin_example.domain.member.dto.LoginDto
 import com.example.kotlin_example.domain.member.dto.MemberResponse
 import com.example.kotlin_example.service.MemberService
 import com.example.kotlin_example.util.Response
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.Parameters
+import io.swagger.v3.oas.annotations.enums.ParameterIn
 import jakarta.validation.Valid
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
@@ -52,6 +55,15 @@ class MemberController(
     }
 
     @PostMapping("/login")
+    // JWT 필수
+    @Parameters(
+        Parameter(
+            name = "Authorization",
+            `in` = ParameterIn.HEADER,
+            required = true,
+
+        )
+    )
     fun createMember(
         @Valid @RequestBody
         saveRequest: LoginDto,
