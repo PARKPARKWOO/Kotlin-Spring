@@ -20,7 +20,7 @@ interface MemberRepository : JpaRepository<Member, Long>, MemberRepositoryCustom
 
 interface MemberRepositoryCustom {
     fun findMembers(page: Pageable): List<Member>
-    fun findByEmail(email:String): Member?
+    fun findByEmail(email:String): Optional<Member>
 }
 
 class MemberRepositoryCustomImpl(
@@ -36,12 +36,13 @@ class MemberRepositoryCustomImpl(
         }
     }
 
-    override fun findByEmail(email: String): Member? {
-        val result =  queryFactory.singleQuery{
+    override fun findByEmail(email: String): Optional<Member> {
+        val result = queryFactory.listQuery {
             select(entity(Member::class))
             from(entity(Member::class))
             where(column(Member::email).equal(email))
         }
-        return result
+        if (result.isEmpty()) return Optional.empty()
+        return Optional.of(result.first()!!)
     }
 }

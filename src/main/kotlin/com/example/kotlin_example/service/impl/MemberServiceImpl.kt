@@ -10,6 +10,7 @@ import com.example.kotlin_example.error.exception.DuplicateEmailException
 import com.example.kotlin_example.error.exception.MemberNotFoundException
 import com.example.kotlin_example.repository.MemberRepository
 import com.example.kotlin_example.service.MemberService
+import jakarta.persistence.NoResultException
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -21,11 +22,12 @@ class MemberServiceImpl(
 ) : MemberService {
 
     @Override
-    override fun findAll(): List<Member>{
+    override fun findAll(): List<Member> {
         return memberRepository.findAll()
     }
+
     @Override
-    override fun findById(memberId: Long): Member{
+    override fun findById(memberId: Long): Member {
         return memberRepository.findById(memberId).orElseThrow { throw MemberNotFoundException() }
     }
 
@@ -43,25 +45,26 @@ class MemberServiceImpl(
     }
 
     override fun findByEmail(email: String): Member {
-        memberRepository.findByEmail(email)?.let {
-            return it
-        }
-        throw MemberNotFoundException(MEMBER_NOT_FOUND)
-    }
-    @Override
-    @Transactional
-    override fun createMember(saveRequest: LoginDto): Long {
-        validEmail(saveRequest.email!!)
-        val memberEntity = saveRequest.toEntity()
-        memberRepository.save(memberEntity)
-        return memberEntity.id!!
-    }
-    private fun validEmail(email: String) {
-        memberRepository.findByEmail(email)?.let {
-            throw DuplicateEmailException(DUPLICATE_EMAIL)
+        return memberRepository.findByEmail(email).orElseThrow {
+            throw MemberNotFoundException(MEMBER_NOT_FOUND)
         }
     }
 
+    @Override
+    @Transactional
+    override fun createMember(saveRequest: LoginDto): Long {
+        if (validEmail(saveRequest.email!!)) {
+            val memberEntity = saveRequest.toEntity()
+            memberRepository.save(memberEntity)
+            return memberEntity.id!!
+        }
+        return memberRepository.findByEmail(email = saveRequest.email).get().id!!
+    }
+
+    private fun validEmail(email: String): Boolean {
+        val findByEmail = memberRepository.findByEmail(email)
+        return !findByEmail.isPresent
+    }
 
 
     @Override

@@ -14,7 +14,11 @@ class CustomAuthenticationEntryPoint(): AuthenticationEntryPoint {
         response: HttpServletResponse,
         authException: AuthenticationException
     ) {
-        log.info("commence 요청 들어옴")
+        log.info("commence 요청 들어옴 + ${request.requestURI}")
+        if (request.requestURI == "/swagger-ui/index.html") {
+            response.sendRedirect(request.requestURI)
+            return
+        }
          response.sendError(HttpServletResponse.SC_FORBIDDEN)
     }
 }

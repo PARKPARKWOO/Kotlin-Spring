@@ -62,6 +62,7 @@ class CustomAuthenticationFilter(
         log.info("로그인 완료되어서 jwt 토큰 만들어서 response")
         val principalDetails = authResult?.principal as PrincipalDetails
         val accessToken = jwtMapper.generateAccessToken(principalDetails, ACCESS_TOKEN_TIME)
+        log.info("jwt token = $accessToken")
         response?.addHeader(AUTHORIZATION.name, JWT.BARREAR_PREFIX.value + accessToken)
     }
 }

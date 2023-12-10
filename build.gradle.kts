@@ -57,6 +57,9 @@ dependencies {
 
     // mockk
     testImplementation("io.mockk:mockk:1.13.8")
+
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
+
 }
 
 tasks.withType<KotlinCompile> {

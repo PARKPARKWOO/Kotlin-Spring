@@ -1,6 +1,8 @@
 package com.example.kotlin_example.api // ktlint-disable package-name
 
 import com.example.kotlin_example.api.common.Log
+import com.example.kotlin_example.api.response.MemberJoinResponse
+import com.example.kotlin_example.config.security.JwtMapper
 import com.example.kotlin_example.domain.member.dto.LoginDto
 import com.example.kotlin_example.domain.member.dto.MemberResponse
 import com.example.kotlin_example.service.MemberService
@@ -22,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/member")
 class MemberController(
     private val memberService: MemberService,
-
+    private val jwtMapper: JwtMapper,
 ) : Log() {
     @GetMapping("/all")
     fun findAll(): Response<List<MemberResponse>> = Response(OK, "멤버 전체 목록", memberService.findMemberResponseAll())
@@ -49,13 +51,18 @@ class MemberController(
         return Response(OK, "페이징", memberService.pagingMembers(page))
     }
 
-    @PostMapping
+    @PostMapping("/login")
     fun createMember(
         @Valid @RequestBody
         saveRequest: LoginDto,
-    ): Response<Long> {
+    ): Response<MemberJoinResponse> {
         val memberId = memberService.createMember(saveRequest)
-
-        return Response(CREATED, "회원 가입 성공", memberId)
+        val member = memberService.findById(memberId)
+        val generateAccessToken = jwtMapper.generateAccessToken(member, 11111111L)
+        val response = MemberJoinResponse(
+            id = memberId,
+            accessToken = generateAccessToken
+        )
+        return Response(CREATED, "회원 가입 성공", response)
     }
 }

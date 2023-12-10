@@ -2,6 +2,7 @@ package com.example.kotlin_example.config.security // ktlint-disable package-nam
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.example.kotlin_example.domain.member.Member
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -20,6 +21,14 @@ class JwtMapper() {
             .withExpiresAt(Date(System.nanoTime() + ttl))
             .withClaim("email", principal.username)
             .withClaim("password", principal.password)
+            .sign(Algorithm.HMAC512(secretKey))
+    }
+    fun generateAccessToken(member: Member, ttl: Long): String {
+        return JWT.create()
+            .withSubject(member.email)
+            .withExpiresAt(Date(System.nanoTime() + ttl))
+            .withClaim("email", member.email)
+            .withClaim("password", member.password)
             .sign(Algorithm.HMAC512(secretKey))
     }
 

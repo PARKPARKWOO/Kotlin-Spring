@@ -23,8 +23,9 @@ class CustomBasicAuthenticationFilter(
     private val log: Logger = LoggerFactory.getLogger(this::class.java)
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
-        log.info("권한이나 인증요청이 들어옴 ${AUTHORIZATION.name}")
+        log.info("권한이나 인증요청이 들어옴 ${AUTHORIZATION.name} ${request.requestURI}")
         val header = request.getHeader(AUTHORIZATION.name)
+        if (request.requestURI == "/swagger-ui/index.html") return chain.doFilter(request, response)
         val token = if (header != null && header.length > JWT.BARREAR_PREFIX.name.length) {
             header.substring(JWT.BARREAR_PREFIX.name.length)
         } else {

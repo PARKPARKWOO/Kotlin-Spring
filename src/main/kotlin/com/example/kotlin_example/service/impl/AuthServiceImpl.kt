@@ -18,6 +18,6 @@ class AuthServiceImpl(
     override fun loadUserByUsername(email: String): UserDetails {
         log.info("AuthService")
         val member = memberRepository.findByEmail(email)
-        return PrincipalDetails(member!!)
+        return PrincipalDetails(member.get())
     }
 }

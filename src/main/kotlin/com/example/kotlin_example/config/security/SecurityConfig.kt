@@ -40,7 +40,9 @@ class SecurityConfig(
             .addFilter(loginFilter())
             .addFilter(authenticationFilter())
             .authorizeHttpRequests {
-//                it.requestMatchers("/login").permitAll()
+                it.requestMatchers("/api/v1/member/login").permitAll()
+                it.requestMatchers("/swagger-ui/**").permitAll()
+                it.requestMatchers("/v3/api-docs/**").permitAll()
                 it.requestMatchers("/**").authenticated()
             }
             .exceptionHandling {
